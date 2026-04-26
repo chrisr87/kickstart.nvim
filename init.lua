@@ -102,10 +102,36 @@ vim.g.have_nerd_font = false
 vim.opt.number = true
 -- You can also add relative line numbers, to help with jumping.
 --  Experiment for yourself to see if you like it!
--- vim.opt.relativenumber = true
+vim.opt.relativenumber = true
 
 -- Enable mouse mode, can be useful for resizing splits for example!
 vim.opt.mouse = 'a'
+
+-- Keep mouse support, but disable Neovim middle-click paste.
+-- Neovim has built-in middle-click paste behavior; mapping only <MiddleMouse>
+-- is not enough because repeated clicks can be parsed as separate pseudo-keys.
+local modes = { 'n', 'i', 'v', 'x', 's', 'o', 'c', 't' }
+
+local keys = {
+  '<MiddleMouse>',
+  '<MiddleDrag>',
+  '<MiddleRelease>',
+  '<2-MiddleMouse>',
+  '<2-MiddleDrag>',
+  '<2-MiddleRelease>',
+  '<3-MiddleMouse>',
+  '<3-MiddleDrag>',
+  '<3-MiddleRelease>',
+  '<4-MiddleMouse>',
+  '<4-MiddleDrag>',
+  '<4-MiddleRelease>',
+}
+
+for _, mode in ipairs(modes) do
+  for _, key in ipairs(keys) do
+    vim.keymap.set(mode, key, '<Nop>', { noremap = true, silent = true })
+  end
+end
 
 -- Don't show the mode, since it's already in the status line
 vim.opt.showmode = false
