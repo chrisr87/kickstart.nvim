@@ -138,7 +138,14 @@ return {
           },
         },
 
-        bashls = { capabilities = capabilities },
+        bashls = {
+          cmd = { vim.fn.stdpath 'data' .. '/mason/bin/bash-language-server', 'start' },
+          filetypes = { 'sh', 'bash', 'zsh' },
+          root_markers = {
+            '.git',
+          },
+          capabilities = capabilities,
+        },
         ts_ls = { capabilities = capabilities },
         eslint = { capabilities = capabilities },
         jsonls = { capabilities = capabilities },
