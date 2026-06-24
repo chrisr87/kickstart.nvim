@@ -16,8 +16,10 @@ return {
         end,
         opts = {},
       },
-      'folke/lazydev.nvim',
     },
+    config = function(_, opts)
+      require('blink.cmp').setup(opts)
+    end,
     opts = {
       keymap = {
         preset = 'default',
@@ -32,13 +34,7 @@ return {
         },
       },
       sources = {
-        default = { 'lsp', 'path', 'snippets', 'lazydev' },
-        providers = {
-          lazydev = {
-            module = 'lazydev.integrations.blink',
-            score_offset = 100,
-          },
-        },
+        default = { 'lsp', 'path', 'snippets' },
       },
       snippets = {
         preset = 'luasnip',

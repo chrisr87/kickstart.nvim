@@ -1,14 +1,4 @@
 return {
-  {
-    'folke/lazydev.nvim',
-    ft = 'lua',
-    opts = {
-      library = {
-        { path = '${3rd}/luv/library', words = { 'vim%.uv' } },
-      },
-    },
-  },
-
 
   {
     'WhoIsSethDaniel/mason-tool-installer.nvim',
@@ -27,11 +17,10 @@ return {
 
   {
     'neovim/nvim-lspconfig',
-    event = { 'BufReadPre', 'BufNewFile' },
+    lazy = false,
     dependencies = {
       { 'williamboman/mason.nvim', opts = {} },
       'williamboman/mason-lspconfig.nvim',
-      { 'j-hui/fidget.nvim', opts = {} },
       'saghen/blink.cmp',
     },
     config = function()
@@ -110,10 +99,31 @@ return {
 
       local servers = {
         lua_ls = {
+          cmd = { vim.fn.stdpath 'data' .. '/mason/bin/lua-language-server' },
+          filetypes = { 'lua' },
+          root_markers = {
+            '.luarc.json',
+            '.luarc.jsonc',
+            '.luacheckrc',
+            '.stylua.toml',
+            'stylua.toml',
+            'selene.toml',
+            'selene.yml',
+            '.git',
+          },
           capabilities = capabilities,
           settings = {
             Lua = {
               completion = { callSnippet = 'Replace' },
+              diagnostics = {
+                globals = { 'vim' },
+              },
+              workspace = {
+                checkThirdParty = false,
+              },
+              telemetry = {
+                enable = false,
+              },
             },
           },
         },
@@ -150,6 +160,14 @@ return {
       end
 
       vim.lsp.enable(vim.tbl_keys(servers))
+
+      vim.api.nvim_create_user_command('UserLspConfigs', function()
+        print(vim.inspect(vim.tbl_keys(servers)))
+      end, {})
+
+      vim.api.nvim_create_user_command('UserLspClients', function()
+        print(vim.inspect(vim.lsp.get_clients { bufnr = 0 }))
+      end, {})
 
     end,
   },
