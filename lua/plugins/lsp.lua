@@ -128,7 +128,14 @@ return {
           },
         },
 
-        rust_analyzer = {
+        rust_analyzer = vim.fn.executable 'rust-analyzer' == 1 and {
+          cmd = { 'rust-analyzer' },
+          filetypes = { 'rust' },
+          root_markers = {
+            'Cargo.toml',
+            'rust-project.json',
+            '.git',
+          },
           capabilities = capabilities,
           settings = {
             ['rust-analyzer'] = {
@@ -136,7 +143,7 @@ return {
               check = { command = 'clippy' },
             },
           },
-        },
+        } or nil,
 
         bashls = {
           cmd = { vim.fn.stdpath 'data' .. '/mason/bin/bash-language-server', 'start' },
