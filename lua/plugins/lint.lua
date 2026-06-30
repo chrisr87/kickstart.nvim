@@ -8,7 +8,6 @@ return {
       lint.linters_by_ft = {
         sh = { 'shellcheck' },
         bash = { 'shellcheck' },
-        zsh = { 'shellcheck' },
         javascript = { 'eslint_d' },
         javascriptreact = { 'eslint_d' },
         typescript = { 'eslint_d' },

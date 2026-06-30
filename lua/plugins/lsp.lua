@@ -160,7 +160,7 @@ return {
 
         bashls = {
           cmd = { vim.fn.stdpath 'data' .. '/mason/bin/bash-language-server', 'start' },
-          filetypes = { 'sh', 'bash', 'zsh' },
+          filetypes = { 'sh', 'bash' },
           root_markers = {
             '.git',
           },

@@ -32,12 +32,27 @@ return {
           }
         end,
 
+        formatters = {
+          rustfmt = {
+            command = function(self, ctx)
+              local root = vim.fs.root(ctx.buf, { 'Cargo.toml', 'rust-project.json', '.git' })
+              if root then
+                local wrapper = vim.fs.joinpath(root, '.devcontainer', 'editor', 'rustfmt')
+                if vim.fn.executable(wrapper) == 1 then
+                  return wrapper
+                end
+              end
+
+              return 'rustfmt'
+            end,
+          },
+        },
+
         formatters_by_ft = {
           lua = { 'stylua' },
           rust = { 'rustfmt' },
           sh = { 'shfmt' },
           bash = { 'shfmt' },
-          zsh = { 'shfmt' },
 
           javascript = { 'prettier', stop_after_first = true },
           javascriptreact = { 'prettier', stop_after_first = true },
