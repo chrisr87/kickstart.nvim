@@ -128,8 +128,21 @@ return {
           },
         },
 
-        rust_analyzer = vim.fn.executable 'rust-analyzer' == 1 and {
-          cmd = { 'rust-analyzer' },
+        rust_analyzer = {
+          cmd = function(dispatchers, config)
+            local wrapper = vim.fs.joinpath(config.root_dir, '.devcontainer', 'editor', 'rust-analyzer')
+
+            if vim.fn.executable(wrapper) == 1 then
+              return vim.lsp.rpc.start({ wrapper }, dispatchers)
+            end
+
+            if vim.fn.executable('rust-analyzer') == 1 then
+              return vim.lsp.rpc.start({ 'rust-analyzer' }, dispatchers)
+            end
+
+            vim.notify('rust-analyzer not found: no project wrapper or host binary', vim.log.levels.WARN)
+            return nil
+          end,
           filetypes = { 'rust' },
           root_markers = {
             'Cargo.toml',
@@ -143,7 +156,7 @@ return {
               check = { command = 'clippy' },
             },
           },
-        } or nil,
+        },
 
         bashls = {
           cmd = { vim.fn.stdpath 'data' .. '/mason/bin/bash-language-server', 'start' },
